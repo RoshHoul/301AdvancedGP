@@ -8,26 +8,32 @@
 
 using namespace std;
 
-static const GLfloat g_vertex_buffer_data[] = {
-   -1.0f, -1.0f, 0.0f,
-    1.0f, -1.0f, 0.0f,
-    0.0f,  1.0f, 0.0f,
+GLuint positionBufferObject;
+
+const float vertexPositions[] = {
+	0.75f, 0.75f, 0.0f, 1.0f,
+	0.75f, -0.75f, 0.0f, 1.0f,
+	-0.75f, -0.75f, 0.0f, 1.0f,
 };
+
+//void InitializeVertexBuffer() {
+//	glGenBuffers(1, &positionBufferObject);
+//	glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
+//}
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(600, 800), "Don't Expect Much!", sf::Style::Default, sf::ContextSettings(32));
-	sf::CircleShape circle(100.0f);
 	
 	window.setVerticalSyncEnabled(true);
 	window.setActive(true);
-	
+	glewInit();
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer); //TUK GURMI
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-	
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	bool running = true;
 
 	while (running) {
@@ -44,9 +50,10 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glEnableVertexAttribArray(0);
+		
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glDisableVertexAttribArray(0);
