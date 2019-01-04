@@ -1,11 +1,11 @@
 ﻿  main.cpp
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(53): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(65): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(87): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(255): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(281): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=int
@@ -14,12 +14,12 @@ c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\ma
           [
               T=float
           ]
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(272): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(299): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(273): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(300): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float

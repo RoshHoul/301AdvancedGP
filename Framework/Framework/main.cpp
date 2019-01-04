@@ -22,7 +22,7 @@ struct Board {
 	int dimensions[8][8];
 };
 
-int board[8][8] =
+int boardBackUp[8][8] =
 { -1,-2,-3,-4,-5,-3,-2,-1,
  -6,-6,-6,-6,-6,-6,-6,-6,
   0, 0, 0, 0, 0, 0, 0, 0,
@@ -31,6 +31,18 @@ int board[8][8] =
   0, 0, 0, 0, 0, 0, 0, 0,
   6, 6, 6, 6, 6, 6, 6, 6,
   1, 2, 3, 4, 5, 3, 2, 1 };
+
+int board[8][8] =
+{ 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0 };
+
+
 
 struct Vector2 {
 	float x;
@@ -53,7 +65,7 @@ sf::Vector2f toCoord(char a, char b) {
 	return sf::Vector2f(x*boardSize, y *boardSize);
 }
 
-void move(std::string str) {
+void movePieces(std::string str) {
 	sf::Vector2f oldPos = toCoord(str[0], str[1]);
 	sf::Vector2f newPos = toCoord(str[2], str[3]);
 
@@ -68,10 +80,10 @@ void move(std::string str) {
 	}
 
 	//castling       //if the king didn't move
-	if (str == "e1g1") if (position.find("e1") == -1) move("h1f1");
-	if (str == "e8g8") if (position.find("e8") == -1) move("h8f8");
-	if (str == "e1c1") if (position.find("e1") == -1) move("a1d1");
-	if (str == "e8c8") if (position.find("e8") == -1) move("a8d8");
+	if (str == "e1g1") if (position.find("e1") == -1) movePieces("h1f1");
+	if (str == "e8g8") if (position.find("e8") == -1) movePieces("h8f8");
+	if (str == "e1c1") if (position.find("e1") == -1) movePieces("a1d1");
+	if (str == "e8c8") if (position.find("e8") == -1) movePieces("a8d8");
 }
 
 void loadPosition() {
@@ -91,7 +103,7 @@ void loadPosition() {
 	}
 
 	for (int i = 0; i < position.length(); i += 5) {
-		move(position.substr(i, 4));
+		movePieces(position.substr(i, 4));
 	}
 }
 
@@ -119,7 +131,7 @@ void main() {
 	int n = 0;
 
 	sf::Texture textBoard, textPiece;
-	textPiece.loadFromFile("../Textures/figures.png");
+	textPiece.loadFromFile("../Textures/black_pawn.png");
 	textBoard.loadFromFile("../Textures/board.png");
 
 	for (int i = 0; i < 32; i++) {
@@ -172,6 +184,7 @@ void main() {
 	if it reaches us. */
 
 	Vector2* newPosition = new Vector2;
+	int serverBoard[8][8];
 
 	while (window.isOpen()) {
 
@@ -213,14 +226,24 @@ void main() {
 				into a variable of that type, or include as the next element of a packet the amount
 				of data this variable type needs to copy. This is particularly useful when it comes
 				to Part 2 of the coursework, where 'level data' is likely very different to the
-				'physics data' you'll have been transmitting for Part 1. */
+				'physics data' you'll have been transmitting for Part 1. */	
 
 			case ENET_EVENT_TYPE_RECEIVE:
 				cout << "Packet received!\n";
-				memcpy(newPosition, enetEvent.packet->data, enetEvent.packet->dataLength);
-				cout << newPosition->x << "," << newPosition->y << "\n";
-				enemy.setPosition(sf::Vector2f(newPosition->x, newPosition->y));
+				memcpy(serverBoard, enetEvent.packet->data, enetEvent.packet->dataLength);
+				//cout << newPosition->x << "," << newPosition->y << "\n";
+				//enemy.setPosition(sf::Vector2f(newPosition->x, newPosition->y));
+				int k = 0;
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						 board[i][j] = serverBoard[i][j];
+						 cout << board[i][j];
+					}
+					cout << endl;
+				}
+			//	loadPosition();
 				break;
+
 			}
 		}
 
@@ -231,29 +254,33 @@ void main() {
 			/* Here we include some code to control our own avatar or shut down
 			the program. */
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				avatar.move(sf::Vector2f(-0.5f, 0.0f));
-			}
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			//{
+			//	avatar.move(sf::Vector2f(-0.5f, 0.0f));
+			//}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				avatar.move(sf::Vector2f(0.5f, 0.0f));
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				avatar.move(sf::Vector2f(0.0f, -0.5f));
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				avatar.move(sf::Vector2f(0.0f, 0.5f));
-			}
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			//{
+			//	avatar.move(sf::Vector2f(0.5f, 0.0f));
+			//}
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			//{
+			//	avatar.move(sf::Vector2f(0.0f, -0.5f));
+			//}
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			//{
+			//	avatar.move(sf::Vector2f(0.0f, 0.5f));
+			//}
+		}
 
 			if (e.type == sf::Event::MouseButtonPressed) {
+				cout << "mouse pressed" << endl;
 				if (e.key.code == sf::Mouse::Left) {
+					cout << "left mouse pressed" << endl;
 					for (int i = 0; i < 32; i++) {
 						if (p[i].getGlobalBounds().contains(pos.x, pos.y))
 						{
+							cout << "mouse in piece" << endl;
 							isMove = true; n = i;
 							dx = pos.x - p[i].getPosition().x;
 							dy = pos.y - p[i].getPosition().y;
@@ -288,13 +315,16 @@ void main() {
 
 				window.close();
 			}
-		}
+		
+
+		if (isMove)
+			p[n].setPosition(pos.x - dx, pos.y - dy);
 
 		/* SFML draw calls */
 
 		window.clear();
 		window.draw(sBoard);
-		//window.draw(sPiece);
+	//	window.draw(sPiece);
 
 		for (int i = 0; i < 32; i++) {
 			p[i].move(offset);
@@ -313,9 +343,9 @@ void main() {
 
 		/* We delete newPosition, destroy the client instance, and deinitialise ENet. */
 
+	}
 		delete newPosition;
 
 		enet_host_destroy(client);
 		atexit(enet_deinitialize);
-	}
 }

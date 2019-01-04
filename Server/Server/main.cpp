@@ -19,10 +19,58 @@ which holds two floats to represent a 2D position, but you should be able to see
 how this can be replaced by any abstract data structure. It can even be replaced
 with a generic bin, as was discussed in Lecture 2. */
 
+
+int boardBackUp[8][8] =
+{ -1,-2,-3,-4,-5,-3,-2,-1,
+ -6,-6,-6,-6,-6,-6,-6,-6,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  6, 6, 6, 6, 6, 6, 6, 6,
+  1, 2, 3, 4, 5, 3, 2, 1 };
+
+
+int boardInts[8][8] =
+{ 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0 };
+
+struct Board {
+	int map[8][8];
+};
+
+Board board;
+
 struct Vector2 {
 	float x;
 	float y;
 };
+
+void PopulateBoard() {
+	for (int i = 2; i < 6; i++) {
+		for (int j = 0; j < 8; j++) {
+			board.map[i][j] = 0;
+		}
+	}
+	
+	if (board.map[0][0] == 0) {
+		int prev = board.map[0][0];
+		for (int i = 0; i < 8; i++) {
+			board.map[0][i] = prev - 1;
+			prev = board.map[0][i];
+			board.map[1][i] = -6;
+		}
+
+	
+	}
+	else {
+
+	}
+}
 
 void main()
 {
@@ -123,7 +171,14 @@ void main()
 				for as long as it remains in scope using the "data" variable. */
 
 				enetEvent.peer->data = "This is a client";
-
+				PopulateBoard();
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						cout << "board values" << board.map[i][j] << endl;
+					}
+				}
+				dataPacket = enet_packet_create(&board, sizeof(Board), ENET_PACKET_FLAG_RELIABLE);
+				enet_host_broadcast(server, 0, dataPacket);
 				break;
 			case ENET_EVENT_TYPE_DISCONNECT:
 				cout << "The client from address " << enetEvent.peer->address.host << ":" << enetEvent.peer->address.port << " disconnected \n";
@@ -166,7 +221,6 @@ void main()
 				window.close();
 			}
 
-			cout << "The position of the entity is (" << position.x << "," << position.y << ")\n";
 
 			/* We populate the packet we made earlier using the enet_packet_create function, which accepts
 			a reference to our Vector 2, the size of the data being sent (so, one Vector2 in this case), and
@@ -174,8 +228,8 @@ void main()
 			but in reality it doesn't necessarily need to). The host then broadcasts the data packet to all
 			connected clients across Channel 0. */
 
-			dataPacket = enet_packet_create(&position, sizeof(Vector2), ENET_PACKET_FLAG_RELIABLE);
-			enet_host_broadcast(server, 0, dataPacket);
+	//		dataPacket = enet_packet_create(&board, sizeof(board)/sizeof(*board), ENET_PACKET_FLAG_RELIABLE);
+	//		enet_host_broadcast(server, 0, dataPacket);
 		}
 
 		/* Basic draw functionality for SFML, making sure our texture appears. */
