@@ -25,8 +25,17 @@ with a generic bin, as was discussed in Lecture 2. */
 
 void main()
 {
+	int windowWidth = 1024;
+	int windowHeight = 768;
 	sf::RenderWindow window(sf::VideoMode(504, 504), "Server");
 	sf::Event e;
+
+	sf::Clock clock;
+	sf::Time last_frame;
+
+	sf::Clock packetClock;
+	sf::Time packetTime;
+
 
 	sf::IpAddress ip = sf::IpAddress::getLocalAddress();
 	sf::TcpSocket socket;
@@ -36,6 +45,9 @@ void main()
 
 	sf::TcpListener listener;
 
+	BatCalculations player1(windowWidth / 2, windowHeight - 20);
+
+	window.setFramerateLimit(60);
 
 	socket.setBlocking(false);
 	if (listener.listen(port) != sf::Socket::Done) {
@@ -50,11 +62,13 @@ void main()
 
 	while (window.isOpen()) {
 
+		last_frame = clock.getElapsedTime();
 
 		if (socket.getRemotePort() == 0) {
 			cout << "Client Disconnected" << endl;
 		}
 		else {
+
 			//		cout << "client connected" << endl;
 		}
 
@@ -70,17 +84,41 @@ void main()
 		sf::Packet packet;
 		
 		socket.receive(packet);
-		packet >> receiveBatState;
 
-		sf::Int32 tempPacket;
-		if (packet >> tempPacket) {
-			receiveBatState = tempPacket;
-		}
-		else {
-			//cout << "kur" << endl;
+		if (packet >> receiveBatState) {
+
 		}
 		
+		sf::Time time_diff = clock.getElapsedTime() - last_frame;
 
-		cout << "sled BAT STATE: " << receiveBatState << endl;
+		sf::Vector2f pos = player1.getPosition();
+		if (receiveBatState == 0) {
+
+			player1.moveLeft(time_diff);
+			pos = player1.getPosition();
+			if (packetClock.getElapsedTime().asSeconds() > 0.05) {
+				cout << "position: " << pos.x << " " << pos.y << endl;
+				
+				packet << pos.x << pos.y;
+				socket.send(packet);
+				packetClock.restart();
+			}
+
+		}
+		else if (receiveBatState == 1) {
+			player1.moveRight(time_diff);
+			pos = player1.getPosition();
+			//cout << "position: " << pos.x << " " << pos.y << endl;
+			if (packetClock.getElapsedTime().asSeconds() > 0.05) {
+				cout << "position: " << pos.x << " " << pos.y << endl;
+				packet << pos.x << pos.y;
+				
+				socket.send(packet);
+				packetClock.restart();
+			}
+
+		}
+
+
 	}
 }

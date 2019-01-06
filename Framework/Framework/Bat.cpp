@@ -9,7 +9,7 @@ Bat::Bat(float startX, float startY)
 	batShape.setPosition(position);
 }
 
-sf::FloatRect Bat::getPosition()
+sf::FloatRect Bat::getBounds()
 {
 	return batShape.getGlobalBounds();
 }
@@ -17,6 +17,11 @@ sf::FloatRect Bat::getPosition()
 sf::RectangleShape Bat::getShape()
 {
 	return batShape;
+}
+
+sf::Vector2f Bat::getPosition()
+{
+	return position;
 }
 
 void Bat::moveLeft()
@@ -29,9 +34,11 @@ void Bat::moveRight()
 	position.x += batSpeed;
 }
 
-void Bat::update()
+void Bat::update(sf::Vector2f updatePos)
 {
-	batShape.setPosition(position);
+	position = updatePos;
+	batShape.setPosition(updatePos);
+	
 }
 
 Bat::~Bat()

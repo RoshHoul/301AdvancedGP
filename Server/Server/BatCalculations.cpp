@@ -1,5 +1,5 @@
 #include "BatCalculations.h"
-
+#include <iostream>
 
 
 BatCalculations::BatCalculations(float x, float y)
@@ -8,15 +8,21 @@ BatCalculations::BatCalculations(float x, float y)
 	position.y = y;
 }
 
-void BatCalculations::moveLeft()
+sf::Vector2f BatCalculations::getPosition()
 {
-	position.x -= batSpeed;
+	return position;
+}
+
+void BatCalculations::moveLeft(sf::Time time)
+{
+	float direction = -1;
+	position.x -= batSpeed * time.asMilliseconds();
 }
 
 
-void BatCalculations::moveRight()
+void BatCalculations::moveRight(sf::Time time)
 {
-	position.x += batSpeed;
+	position.x += batSpeed * time.asMilliseconds();
 }
 
 BatCalculations::~BatCalculations()

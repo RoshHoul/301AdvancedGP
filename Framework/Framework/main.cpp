@@ -8,6 +8,14 @@
 
 using namespace std;
 
+bool isAnyKeyPressed() {
+	for (int k = -1; k < sf::Keyboard::KeyCount; ++k) {
+		if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(k)))
+			return true;
+	}
+	return false;
+}
+
 int main() {
 
 	int windowWidth = 1024;
@@ -45,11 +53,12 @@ int main() {
 				window.close();
 			}
 			else if (e.type == sf::Event::GainedFocus) {
+				cout << "GainedFocus" << endl;
 				update = true;
 			}
 			else if (e.type == sf::Event::LostFocus) {
 				update = false;
-			}
+			} 
 		}
 
 
@@ -63,6 +72,10 @@ int main() {
 				//bat.moveRight();
 				sendBatState = 1;
 			}
+			else if (!isAnyKeyPressed()) {
+				sendBatState = -1;
+					
+			}
 		}
 
 		sf::Packet packet;
@@ -70,8 +83,19 @@ int main() {
 		//cout << "cl BAT STATE: " << sendBatState << endl;
 		if (prevBatState != sendBatState) {
 			packet << sendBatState;
-			cout << "CL PACKET: " << sendBatState << endl;
+		//	cout << "CL PACKET: " << sendBatState << endl;
 			socket.send(packet);
+		}
+
+		sf::Vector2f newPos;
+		socket.receive(packet);
+		
+		
+		if (packet >> newPos.x >> newPos.y) {
+			cout << "newPos" << newPos.x << " " << newPos.y << endl;
+			cout << "oldPos" << bat.getPosition().x << " " << bat.getPosition().y << endl;
+			if (!(abs(newPos.x) - abs(bat.getPosition().x) > 200)) 
+				bat.update(newPos);
 		}
 
 		if (ball.getPosition().top > windowHeight) {
@@ -93,14 +117,14 @@ int main() {
 			ball.reboundSides();
 		}
 
-		if (ball.getPosition().intersects(bat.getPosition())) {
+		if (ball.getPosition().intersects(bat.getBounds())) {
 			ball.rebountBatOrTop();
 		}
 
 
 
 		ball.update();
-		bat.update();
+		//bat.update();
 
 		window.clear(sf::Color(26, 128, 281, 255));
 		window.draw(bat.getShape());

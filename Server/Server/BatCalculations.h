@@ -3,11 +3,13 @@
 class BatCalculations
 {
 	sf::Vector2f position;
-	float batSpeed = 3.0f;
+		float batSpeed = 10.0f;
+
 public:
 	BatCalculations(float x, float y);
-	void moveLeft();
-	void moveRight();
+	sf::Vector2f getPosition();
+	void moveLeft(sf::Time time);
+	void moveRight(sf::Time time);
 	~BatCalculations();
 };
 

@@ -1,3 +1,6 @@
-﻿  main.cpp
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\server\server\main.cpp(34): warning C4101: 'sendBatState': unreferenced local variable
+﻿  BatCalculations.cpp
+  main.cpp
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\server\server\main.cpp(48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\server\server\main.cpp(43): warning C4101: 'sendBatState': unreferenced local variable
+  Generating Code...
   Server.vcxproj -> C:\Uni Work\3rd year 1st half\301AdvancedGamesProgramming\Server\x64\Debug\Server.exe
