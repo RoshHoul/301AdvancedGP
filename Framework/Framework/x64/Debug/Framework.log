@@ -1,27 +1,6 @@
 ﻿  main.cpp
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(65): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(281): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(299): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(300): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(105): warning C4305: 'argument': truncation from 'int' to 'sf::Uint8'
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(105): warning C4309: 'argument': truncation of constant value
   Framework.vcxproj -> C:\Uni Work\3rd year 1st half\301AdvancedGamesProgramming\Framework\x64\Debug\Framework.exe

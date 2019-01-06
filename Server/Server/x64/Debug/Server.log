@@ -1,2 +1,3 @@
 ﻿  main.cpp
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\server\server\main.cpp(34): warning C4101: 'sendBatState': unreferenced local variable
   Server.vcxproj -> C:\Uni Work\3rd year 1st half\301AdvancedGamesProgramming\Server\x64\Debug\Server.exe
