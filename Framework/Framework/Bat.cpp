@@ -9,10 +9,7 @@ Bat::Bat(float startX, float startY)
 	batShape.setPosition(position);
 }
 
-sf::FloatRect Bat::getBounds()
-{
-	return batShape.getGlobalBounds();
-}
+
 
 sf::RectangleShape Bat::getShape()
 {

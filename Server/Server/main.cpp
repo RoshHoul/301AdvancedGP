@@ -1,6 +1,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+#include <list>
+
+#include "BallCalculations.h"
 #include "BatCalculations.h"
 /* Note that we are including both the 32-bit and 64-bit versions of SFML
 (downloadable from their site) as ENet can be temperamental dependent upon OS.
@@ -25,6 +28,7 @@ with a generic bin, as was discussed in Lecture 2. */
 
 void main()
 {
+
 	int windowWidth = 1024;
 	int windowHeight = 768;
 	sf::RenderWindow window(sf::VideoMode(504, 504), "Server");
@@ -33,38 +37,71 @@ void main()
 	sf::Clock clock;
 	sf::Time last_frame;
 
+	sf::TcpListener listener;
+
 	sf::Clock packetClock;
-	sf::Time packetTime;
+	float tickRate = 60;
+	float interval = 1 / tickRate;
 
+	sf::TcpSocket socketPlayer1;
+	sf::TcpSocket socketPlayer2;
 
-	sf::IpAddress ip = sf::IpAddress::getLocalAddress();
-	sf::TcpSocket socket;
+	std::list<sf::TcpSocket*> clients;
+
+	sf::SocketSelector selector;
+
 	int port = 2000;
 	sf::Int32 sendBatState;
 	sf::Int32 receiveBatState = -1;
 
-	sf::TcpListener listener;
+
+	sf::Packet packet;
+	selector.add(listener);
 
 	BatCalculations player1(windowWidth / 2, windowHeight - 20);
+	BallCalculations ball(windowWidth / 2, windowHeight / 2);
 
 	window.setFramerateLimit(60);
 
-	socket.setBlocking(false);
+	socketPlayer1.setBlocking(false);
 	if (listener.listen(port) != sf::Socket::Done) {
 		std::cout << "Check if port is free" << endl;
 		exit(EXIT_FAILURE);
 	}
 
-	if (listener.accept(socket) != sf::Socket::Done) {
-		std::cout << "Error accepting socket" << endl;
+	if (listener.accept(socketPlayer1) != sf::Socket::Done) {
+		std::cout << "Error accepting socket1" << endl;
 		exit(EXIT_FAILURE);
 	}
 
 	while (window.isOpen()) {
 
-		last_frame = clock.getElapsedTime();
+		if (selector.wait()) {
+			if (selector.isReady(listener)) {
+				if (listener.accept(socketPlayer1) == sf::Socket::Done) {
+					selector.add(socketPlayer1);
+				}
+				
+				if (listener.accept(socketPlayer2) == sf::Socket::Done) {
+					selector.add(socketPlayer2);
+				}
+			}
+			else {
+				if (selector.isReady(socketPlayer1)) {
 
-		if (socket.getRemotePort() == 0) {
+				}
+			}
+		}
+
+		last_frame = clock.getElapsedTime();
+		bool updateNetwork = false;
+
+		if (packetClock.getElapsedTime().asSeconds() >= interval) {
+			updateNetwork = true;
+			packetClock.restart();
+		}
+
+		if (socketPlayer1.getRemotePort() == 0) {
 			cout << "Client Disconnected" << endl;
 		}
 		else {
@@ -81,14 +118,13 @@ void main()
 
 		}
 
-		sf::Packet packet;
-		
-		socket.receive(packet);
+
+		socketPlayer1.receive(packet);
 
 		if (packet >> receiveBatState) {
 
 		}
-		
+
 		sf::Time time_diff = clock.getElapsedTime() - last_frame;
 
 		sf::Vector2f pos = player1.getPosition();
@@ -96,12 +132,12 @@ void main()
 
 			player1.moveLeft(time_diff);
 			pos = player1.getPosition();
-			if (packetClock.getElapsedTime().asSeconds() > 0.05) {
+			if (updateNetwork) {
 				cout << "position: " << pos.x << " " << pos.y << endl;
-				
-				packet << pos.x << pos.y;
-				socket.send(packet);
-				packetClock.restart();
+
+		//		packet << pos.x << pos.y;
+		//		socketPlayer1.send(packet);
+		//		packetClock.restart();
 			}
 
 		}
@@ -109,16 +145,44 @@ void main()
 			player1.moveRight(time_diff);
 			pos = player1.getPosition();
 			//cout << "position: " << pos.x << " " << pos.y << endl;
-			if (packetClock.getElapsedTime().asSeconds() > 0.05) {
+			if (updateNetwork) {
 				cout << "position: " << pos.x << " " << pos.y << endl;
-				packet << pos.x << pos.y;
-				
-				socket.send(packet);
-				packetClock.restart();
+			//	packet << pos.x << pos.y;
+
+				//socketPlayer1.send(packet);
+			//	packetClock.restart();
 			}
+		}
+
+		if (ball.getPosition().top > windowHeight) {
+			ball.hitBottom();
 
 		}
 
+		if (ball.getPosition().top < 0) {
+			ball.rebountBatOrTop();
+		}
 
+		if (ball.getPosition().left < 0 || ball.getPosition().left + 10 > windowWidth) {
+			ball.reboundSides();
+		}
+
+		if (ball.getPosition().intersects(player1.getBounds())) {
+			ball.rebountBatOrTop();
+		}
+
+		ball.update(time_diff);
+
+		sf::Vector2f batPos = player1.getPosition();
+		sf::Vector2f ballPos = ball.getVecPosition();
+
+		if (updateNetwork) {
+			cout << "Sending data: " << batPos.x << ", " << batPos.y << " ---- " << ballPos.x << ", " << ballPos.y << endl;
+			packet << batPos.x << batPos.y << ballPos.x << ballPos.y;
+			socketPlayer1.send(packet);
+			packetClock.restart();
+		}
 	}
+
+	
 }

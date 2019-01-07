@@ -10,7 +10,6 @@ class Bat
 public:
 	Bat(float startX, float startY);
 
-	sf::FloatRect getBounds();
 	sf::RectangleShape getShape();
 	sf::Vector2f getPosition();
 	void moveLeft();

@@ -87,43 +87,21 @@ int main() {
 			socket.send(packet);
 		}
 
-		sf::Vector2f newPos;
+		sf::Vector2f batPos;
+		sf::Vector2f ballPos;
 		socket.receive(packet);
 		
 		
-		if (packet >> newPos.x >> newPos.y) {
-			cout << "newPos" << newPos.x << " " << newPos.y << endl;
+		if (packet >> batPos.x >> batPos.y >> ballPos.x >> ballPos.y) {
+			cout << "newPos" << batPos.x << " " << batPos.y << endl;
 			cout << "oldPos" << bat.getPosition().x << " " << bat.getPosition().y << endl;
-			if (!(abs(newPos.x) - abs(bat.getPosition().x) > 200)) 
-				bat.update(newPos);
-		}
-
-		if (ball.getPosition().top > windowHeight) {
-			ball.hitBottom();
-			lives--;
-
-			if (lives < 1) {
-				score = 0;
-				lives = 3;
-			}
-		}
-
-		if (ball.getPosition().top < 0) {
-			ball.rebountBatOrTop();
-			score++;
-		}
-
-		if (ball.getPosition().left < 0 || ball.getPosition().left + 10 > windowWidth) {
-			ball.reboundSides();
-		}
-
-		if (ball.getPosition().intersects(bat.getBounds())) {
-			ball.rebountBatOrTop();
+			bat.update(batPos);
+			ball.update(ballPos);
 		}
 
 
 
-		ball.update();
+		//ball.update();
 		//bat.update();
 
 		window.clear(sf::Color(26, 128, 281, 255));

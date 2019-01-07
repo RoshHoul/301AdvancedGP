@@ -1,6 +1,8 @@
-﻿  main.cpp
+﻿  Bat.cpp
+  main.cpp
 c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(29): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(129): warning C4305: 'argument': truncation from 'int' to 'sf::Uint8'
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(129): warning C4309: 'argument': truncation of constant value
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(107): warning C4305: 'argument': truncation from 'int' to 'sf::Uint8'
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(107): warning C4309: 'argument': truncation of constant value
+  Generating Code...
   Framework.vcxproj -> C:\Uni Work\3rd year 1st half\301AdvancedGamesProgramming\Framework\x64\Debug\Framework.exe

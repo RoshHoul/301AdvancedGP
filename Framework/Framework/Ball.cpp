@@ -41,11 +41,9 @@ void Ball::hitBottom()
 	position.x = 500;
 }
 
-void Ball::update()
+void Ball::update(sf::Vector2f newPos)
 {
-	position.y += yVelocity;
-	position.x += xVelocity;
-
+	position = newPos;
 	ballShape.setPosition(position);
 }
 
