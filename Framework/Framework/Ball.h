@@ -14,9 +14,6 @@ public:
 	sf::FloatRect getPosition();
 	sf::RectangleShape getShape();
 	float getXVelocity();
-	void reboundSides();
-	void rebountBatOrTop();
-	void hitBottom();
 	void update(sf::Vector2f newPos);
 };
 

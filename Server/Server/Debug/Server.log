@@ -1,0 +1,29 @@
+﻿  BallCalculations.cpp
+  BatCalculations.cpp
+  main.cpp
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\server\server\main.cpp(61): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\server\server\main.cpp(62): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\server\server\main.cpp(54): warning C4101: 'sendBatState': unreferenced local variable
+  Generating Code...
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: void __thiscall sf::Socket::setBlocking(bool)" (__imp_?setBlocking@Socket@sf@@QAEX_N@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::TcpSocket::TcpSocket(void)" (__imp_??0TcpSocket@sf@@QAE@XZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: unsigned short __thiscall sf::TcpSocket::getRemotePort(void)const " (__imp_?getRemotePort@TcpSocket@sf@@QBEGXZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: enum sf::Socket::Status __thiscall sf::TcpSocket::send(class sf::Packet &)" (__imp_?send@TcpSocket@sf@@QAE?AW4Status@Socket@2@AAVPacket@2@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: enum sf::Socket::Status __thiscall sf::TcpSocket::receive(class sf::Packet &)" (__imp_?receive@TcpSocket@sf@@QAE?AW4Status@Socket@2@AAVPacket@2@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: virtual __thiscall sf::TcpSocket::~TcpSocket(void)" (__imp_??1TcpSocket@sf@@UAE@XZ) referenced in function "public: virtual void * __thiscall sf::TcpSocket::`scalar deleting destructor'(unsigned int)" (??_GTcpSocket@sf@@UAEPAXI@Z)
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::Packet::Packet(void)" (__imp_??0Packet@sf@@QAE@XZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: virtual __thiscall sf::Packet::~Packet(void)" (__imp_??1Packet@sf@@UAE@XZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::Packet::operator bool (__thiscall sf::Packet::*)(unsigned int)(void)const " (__imp_??BPacket@sf@@QBEP801@AE_NI@ZXZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: class sf::Packet & __thiscall sf::Packet::operator>>(int &)" (__imp_??5Packet@sf@@QAEAAV01@AAH@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: class sf::Packet & __thiscall sf::Packet::operator<<(float)" (__imp_??6Packet@sf@@QAEAAV01@M@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::SocketSelector::SocketSelector(void)" (__imp_??0SocketSelector@sf@@QAE@XZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::SocketSelector::~SocketSelector(void)" (__imp_??1SocketSelector@sf@@QAE@XZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: void __thiscall sf::SocketSelector::add(class sf::Socket &)" (__imp_?add@SocketSelector@sf@@QAEXAAVSocket@2@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: bool __thiscall sf::SocketSelector::wait(class sf::Time)" (__imp_?wait@SocketSelector@sf@@QAE_NVTime@2@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: bool __thiscall sf::SocketSelector::isReady(class sf::Socket &)const " (__imp_?isReady@SocketSelector@sf@@QBE_NAAVSocket@2@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::TcpListener::TcpListener(void)" (__imp_??0TcpListener@sf@@QAE@XZ) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: enum sf::Socket::Status __thiscall sf::TcpListener::listen(unsigned short,class sf::IpAddress const &)" (__imp_?listen@TcpListener@sf@@QAE?AW4Status@Socket@2@GABVIpAddress@2@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: enum sf::Socket::Status __thiscall sf::TcpListener::accept(class sf::TcpSocket &)" (__imp_?accept@TcpListener@sf@@QAE?AW4Status@Socket@2@AAVTcpSocket@2@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: virtual __thiscall sf::TcpListener::~TcpListener(void)" (__imp_??1TcpListener@sf@@UAE@XZ) referenced in function _main
+main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static class sf::IpAddress const sf::IpAddress::Any" (__imp_?Any@IpAddress@sf@@2V12@B)
+C:\Uni Work\3rd year 1st half\301AdvancedGamesProgramming\Server\Debug\Server.exe : fatal error LNK1120: 21 unresolved externals

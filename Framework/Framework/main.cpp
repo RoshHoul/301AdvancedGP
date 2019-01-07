@@ -6,9 +6,11 @@
 #include "Bat.h"
 #include "Ball.h"
 #include "ReadFromFile.h"
+#include "Sound.h"
 
 using namespace std;
 
+//Check if no key is pressed;
 bool isAnyKeyPressed() {
 	for (int k = -1; k < sf::Keyboard::KeyCount; ++k) {
 		if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(k)))
@@ -29,9 +31,16 @@ int main() {
 	Bat bat(windowWidth / 2, windowHeight - 20);
 	Ball ball(windowWidth / 2, 1);
 
+	Sound music("background.wav");
+	music.setLoop(true);
+	
 	//HUD todo
 	sf::Text hud;
 	sf::Event e;
+
+	sf::Clock packetClock;
+	float tickRate = 60;
+	float interval = 1 / 60;
 
 	sf::TcpSocket socket;
 	sf::IpAddress ip = getFromFileString("ip.txt", 1);//sf::IpAddress::getLocalAddress();
@@ -41,6 +50,7 @@ int main() {
 	sf::Int32 sendBatState = -1;
 	sf::Int32 recieveBatState = -1;
 
+	//Setting setBlocking to false, so the client doesn't wait for packets.
 	socket.setBlocking(false);
 	socket.connect(ip, port);
 
@@ -48,12 +58,23 @@ int main() {
 
 	bool update = false;
 
+	music.play();
+
 	while (window.isOpen()) {
+
+		//Variable to check if packets are ready to send according to the fixed timestep
+		bool updateNetwork = false;
+
+		if (packetClock.getElapsedTime().asSeconds() >= interval) {
+			updateNetwork = true;
+			packetClock.restart();
+		}
 
 		while (window.pollEvent(e)) {
 			if ((e.type == sf::Event::Closed) ||sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { 
 				window.close();
 			}
+			//Take user input only if the current window is selected
 			else if (e.type == sf::Event::GainedFocus) {
 				cout << "GainedFocus" << endl;
 				update = true;
@@ -63,15 +84,13 @@ int main() {
 			} 
 		}
 
-
+		//Update BatState on userInput
 		sf::Int32 prevBatState = sendBatState;
 		if (update) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				//bat.moveLeft();
 				sendBatState = 0;
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-				//bat.moveRight();
 				sendBatState = 1;
 			}
 			else if (!isAnyKeyPressed()) {
@@ -82,18 +101,18 @@ int main() {
 
 		sf::Packet packet;
 		
-		//cout << "cl BAT STATE: " << sendBatState << endl;
-		if (prevBatState != sendBatState) {
+		//Send the state only if it's different than the last one and the fixed time step allows it
+		if (prevBatState != sendBatState && updateNetwork) {
 			packet << sendBatState;
-		//	cout << "CL PACKET: " << sendBatState << endl;
 			socket.send(packet);
 		}
 
+		//Recieve bat and ball states
 		sf::Vector2f batPos;
 		sf::Vector2f ballPos;
 		socket.receive(packet);
 		
-		
+		//Update the positions
 		if (packet >> batPos.x >> batPos.y >> ballPos.x >> ballPos.y) {
 			cout << "newPos" << batPos.x << " " << batPos.y << endl;
 			cout << "oldPos" << bat.getPosition().x << " " << bat.getPosition().y << endl;
@@ -101,11 +120,7 @@ int main() {
 			ball.update(ballPos);
 		}
 
-
-
-		//ball.update();
-		//bat.update();
-
+		//Draw
 		window.clear(sf::Color(26, 128, 281, 255));
 		window.draw(bat.getShape());
 		window.draw(ball.getShape());
@@ -113,6 +128,7 @@ int main() {
 		window.display();
 	}
 
+	//Safely disconnect the socket
 	socket.disconnect();
 	return 0;
 }

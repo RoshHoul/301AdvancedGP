@@ -5,26 +5,8 @@
 
 #include "BallCalculations.h"
 #include "BatCalculations.h"
-/* Note that we are including both the 32-bit and 64-bit versions of SFML
-(downloadable from their site) as ENet can be temperamental dependent upon OS.
-The 64-bit version (with all library directories and libraries included for you)
-seems to work on University computers. If it fails you may need to enable your
-IDE to load symbols for DLLs (Tools -> Options -> Debugging -> Symbols, and check
-the box 'Microsoft Symbol Servers' before cleaning and rebuilding the project).
-
-REMEMBER: You don't have to use ENet for the coursework, of course, and this
-example is purely illustrative. */
 
 using namespace std;
-
-/* We begin by creating a data structure - we're using a Vector2 in our example,
-which holds two floats to represent a 2D position, but you should be able to see
-how this can be replaced by any abstract data structure. It can even be replaced
-with a generic bin, as was discussed in Lecture 2. */
-
-
-
-
 
 void main()
 {
@@ -58,12 +40,16 @@ void main()
 	sf::Packet packet;
 	selector.add(listener);
 
+
 	BatCalculations player1(windowWidth / 2, windowHeight - 20);
 	BallCalculations ball(windowWidth / 2, windowHeight / 2);
 
 	window.setFramerateLimit(60);
-
+	
+	//SetBlocking false, so the client doesn't have to wait for packets
 	socketPlayer1.setBlocking(false);
+
+	//Error catching if connections are unsuccessful.
 	if (listener.listen(port) != sf::Socket::Done) {
 		std::cout << "Check if port is free" << endl;
 		exit(EXIT_FAILURE);
@@ -76,6 +62,7 @@ void main()
 
 	while (window.isOpen()) {
 
+		//Using selector so multiple clients can connect. Not working
 		if (selector.wait()) {
 			if (selector.isReady(listener)) {
 				sf::TcpSocket* client = new sf::TcpSocket;
@@ -100,22 +87,24 @@ void main()
 			}
 		}
 
+		//The length of a signle frame
 		last_frame = clock.getElapsedTime();
+		//Boolean used for packets fixed time step;
 		bool updateNetwork = false;
 
+		//Fixed time step
 		if (packetClock.getElapsedTime().asSeconds() >= interval) {
 			updateNetwork = true;
 			packetClock.restart();
 		}
 
+		//Check if client is connected;
 		if (socketPlayer1.getRemotePort() == 0) {
 			cout << "Client Disconnected" << endl;
 		}
 		else {
-
-			//		cout << "client connected" << endl;
+			cout << "Client connected" << endl;
 		}
-
 		while (window.pollEvent(e)) {
 
 			if (e.type == sf::Event::Closed) {
@@ -127,13 +116,12 @@ void main()
 
 
 		socketPlayer1.receive(packet);
+		packet >> receiveBatState;
 
-		if (packet >> receiveBatState) {
-
-		}
-
+		//Timer for player movement
 		sf::Time time_diff = clock.getElapsedTime() - last_frame;
 
+		//Calculate client position. Case of 0 moves left, case of 1 moves right. Any other case, the client isn't updated
 		sf::Vector2f pos = player1.getPosition();
 		if (receiveBatState == 0) {
 
@@ -145,31 +133,33 @@ void main()
 			player1.moveRight(time_diff);
 			pos = player1.getPosition();
 		}
-
-		if (ball.getPosition().top > windowHeight) {
-			ball.hitBottom();
-
+		else {
+			pos = player1.getPosition();
 		}
 
+		//Ball movement calculations
+		if (ball.getPosition().top > windowHeight) {
+			ball.hitBottom();
+		}
 		if (ball.getPosition().top < 0) {
 			ball.rebountBatOrTop();
 		}
-
 		if (ball.getPosition().left < 0 || ball.getPosition().left + 10 > windowWidth) {
 			ball.reboundSides();
 		}
-
 		if (ball.getPosition().intersects(player1.getBounds())) {
-			cout << "TOPKI V BATATA" << endl;
 			ball.rebountBatOrTop();
 		}
 
+		//Calculate the ball and client positions
 		ball.update(time_diff);
 		player1.update();
 
+		//Assign the last calculated position;
 		sf::Vector2f batPos = player1.getPosition();
 		sf::Vector2f ballPos = ball.getVecPosition();
 
+		//Update ball and clients positions (client side) after all calculations done.
 		if (updateNetwork) {
 			//cout << "Sending data: " << batPos.x << ", " << batPos.y << " ---- " << ballPos.x << ", " << ballPos.y << endl;
 			packet << batPos.x << batPos.y << ballPos.x << ballPos.y;
@@ -177,6 +167,4 @@ void main()
 			packetClock.restart();
 		}
 	}
-
-	
 }

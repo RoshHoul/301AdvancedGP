@@ -1,9 +1,9 @@
 ﻿  main.cpp
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(29): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(109): warning C4305: 'argument': truncation from 'int' to 'sf::Uint8'
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(109): warning C4309: 'argument': truncation of constant value
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(126): warning C4305: 'argument': truncation from 'int' to 'sf::Uint8'
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\main.cpp(126): warning C4309: 'argument': truncation of constant value
+c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\readfromfile.h(45): warning C4715: 'getFromFileInt': not all control paths return a value
 c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\readfromfile.h(31): warning C4715: 'getFromFileString': not all control paths return a value
 c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\readfromfile.h(17): warning C4715: 'getFromFileChar': not all control paths return a value
-c:\uni work\3rd year 1st half\301advancedgamesprogramming\framework\framework\readfromfile.h(45): warning C4715: 'getFromFileInt': not all control paths return a value
   Framework.vcxproj -> C:\Uni Work\3rd year 1st half\301AdvancedGamesProgramming\Framework\x64\Debug\Framework.exe
