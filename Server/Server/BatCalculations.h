@@ -12,6 +12,7 @@ public:
 	sf::FloatRect getBounds();
 	void moveLeft(sf::Time time);
 	void moveRight(sf::Time time);
+	void update();
 	~BatCalculations();
 };
 

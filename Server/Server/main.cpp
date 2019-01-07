@@ -78,17 +78,24 @@ void main()
 
 		if (selector.wait()) {
 			if (selector.isReady(listener)) {
-				if (listener.accept(socketPlayer1) == sf::Socket::Done) {
-					selector.add(socketPlayer1);
+				sf::TcpSocket* client = new sf::TcpSocket;
+				if (listener.accept(*client) == sf::Socket::Done) {
+					clients.push_back(client);
+					selector.add(*client);
 				}
-				
-				if (listener.accept(socketPlayer2) == sf::Socket::Done) {
-					selector.add(socketPlayer2);
+				else {
+					delete client;
 				}
 			}
 			else {
-				if (selector.isReady(socketPlayer1)) {
+				for (std::list<sf::TcpSocket*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+					sf::TcpSocket& client = **it;
+					if (selector.isReady(client)) {
+						sf::Packet packet;
+						if (client.receive(packet) == sf::Socket::Done) {
 
+						}
+					}
 				}
 			}
 		}
@@ -132,26 +139,11 @@ void main()
 
 			player1.moveLeft(time_diff);
 			pos = player1.getPosition();
-			if (updateNetwork) {
-				cout << "position: " << pos.x << " " << pos.y << endl;
-
-		//		packet << pos.x << pos.y;
-		//		socketPlayer1.send(packet);
-		//		packetClock.restart();
-			}
 
 		}
 		else if (receiveBatState == 1) {
 			player1.moveRight(time_diff);
 			pos = player1.getPosition();
-			//cout << "position: " << pos.x << " " << pos.y << endl;
-			if (updateNetwork) {
-				cout << "position: " << pos.x << " " << pos.y << endl;
-			//	packet << pos.x << pos.y;
-
-				//socketPlayer1.send(packet);
-			//	packetClock.restart();
-			}
 		}
 
 		if (ball.getPosition().top > windowHeight) {
@@ -168,16 +160,18 @@ void main()
 		}
 
 		if (ball.getPosition().intersects(player1.getBounds())) {
+			cout << "TOPKI V BATATA" << endl;
 			ball.rebountBatOrTop();
 		}
 
 		ball.update(time_diff);
+		player1.update();
 
 		sf::Vector2f batPos = player1.getPosition();
 		sf::Vector2f ballPos = ball.getVecPosition();
 
 		if (updateNetwork) {
-			cout << "Sending data: " << batPos.x << ", " << batPos.y << " ---- " << ballPos.x << ", " << ballPos.y << endl;
+			//cout << "Sending data: " << batPos.x << ", " << batPos.y << " ---- " << ballPos.x << ", " << ballPos.y << endl;
 			packet << batPos.x << batPos.y << ballPos.x << ballPos.y;
 			socketPlayer1.send(packet);
 			packetClock.restart();

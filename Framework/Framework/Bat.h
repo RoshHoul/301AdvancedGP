@@ -12,8 +12,6 @@ public:
 
 	sf::RectangleShape getShape();
 	sf::Vector2f getPosition();
-	void moveLeft();
-	void moveRight();
 	void update(sf::Vector2f updatePos);
 	~Bat();
 };

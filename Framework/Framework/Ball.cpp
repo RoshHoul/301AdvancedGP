@@ -31,7 +31,7 @@ void Ball::reboundSides()
 
 void Ball::rebountBatOrTop()
 {
-	//position.y -= (yVelocity * 30);1
+	//position.y -= (yVelocity * 30);
 	yVelocity = -yVelocity;
 }
 

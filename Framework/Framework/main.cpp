@@ -5,6 +5,7 @@
 
 #include "Bat.h"
 #include "Ball.h"
+#include "ReadFromFile.h"
 
 using namespace std;
 
@@ -18,8 +19,8 @@ bool isAnyKeyPressed() {
 
 int main() {
 
-	int windowWidth = 1024;
-	int windowHeight = 768;
+	int windowWidth = getFromFileInt("windowSize.txt", 1); //1024;
+	int windowHeight = getFromFileInt("windowSize.txt", 2); //768
 
 	sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Client Pong");
 	int score = 0;
@@ -33,9 +34,10 @@ int main() {
 	sf::Event e;
 
 	sf::TcpSocket socket;
-	sf::IpAddress ip = sf::IpAddress::getLocalAddress();
-	int port = 2000;
-
+	sf::IpAddress ip = getFromFileString("ip.txt", 1);//sf::IpAddress::getLocalAddress();
+	cout << "IP IS " << ip << endl;
+	int port = getFromFileInt("port.txt", 1);
+	cout << "PORT IS " << port << endl;
 	sf::Int32 sendBatState = -1;
 	sf::Int32 recieveBatState = -1;
 

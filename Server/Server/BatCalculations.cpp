@@ -7,7 +7,7 @@ BatCalculations::BatCalculations(float x, float y)
 	position.x = x;
 	position.y = y;
 
-	batShape.setSize(sf::Vector2f(50,5));
+	batShape.setSize(sf::Vector2f(100,15));
 	batShape.setPosition(position);
 }
 
@@ -30,6 +30,10 @@ void BatCalculations::moveLeft(sf::Time time)
 void BatCalculations::moveRight(sf::Time time)
 {
 	position.x += batSpeed * time.asMilliseconds();
+}
+
+void BatCalculations::update() {
+	batShape.setPosition(position);
 }
 
 BatCalculations::~BatCalculations()
